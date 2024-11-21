@@ -1,1 +1,68 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Viewer</title>
+  <style>
+    /* Basic styling for the app */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1 {
+      color: #333;
+    }
+    .markdown-container {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Section for displaying the markdown content -->
+  <h1>Markdown Viewer</h1>
+  <div id="markdownContent" class="markdown-container">
+    Loading Markdown...
+  </div>
+
+  <!-- External script to load the markdown file and render it -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    // Function to fetch the '1.md' file and render it as HTML
+    async function renderMarkdown() {
+      try {
+        // Fetch the markdown file (assumes '1.md' is in the same folder as this HTML file)
+        const response = await fetch('1.md');
+        
+        // Check if the response is okay (status 200)
+        if (!response.ok) {
+          throw new Error('Markdown file not found!');
+        }
+
+        // Get the text content of the markdown file
+        const markdownText = await response.text();
+        
+        // Convert the markdown text to HTML using marked.js
+        const htmlContent = marked(markdownText);
+        
+        // Inject the converted HTML into the 'markdownContent' div
+        document.getElementById('markdownContent').innerHTML = htmlContent;
+      } catch (error) {
+        // In case of an error (e.g., file not found)
+        document.getElementById('markdownContent').innerHTML = 'Error: ' + error.message;
+      }
+    }
+
+    // Call the function to render the markdown when the page loads
+    window.onload = renderMarkdown;
+  </script>
+
+</body>
+</html>
