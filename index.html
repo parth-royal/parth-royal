@@ -6,8 +6,13 @@
   <title>Your Portfolio</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Marked.js CDN for markdown parsing -->
+  <!-- Marked.js CDN for Markdown Parsing -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Mermaid.js CDN for Diagram Rendering -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
   <style>
     /* Custom Styling for Hiding the Project */
     .hidden-project {
@@ -55,7 +60,7 @@
       <div id="markdownViewerProject" class="hidden-project mt-6 p-6 bg-white shadow-md rounded-lg">
         <h3 class="text-2xl font-semibold">Markdown Viewer</h3>
         <p class="text-lg my-4">
-          This project allows users to view the content of a markdown file within the app. Users can upload a markdown file, and the app will render it in a readable HTML format.
+          This project allows users to view the content of a markdown file within the app. Users can upload a markdown file, and the app will render it in a readable HTML format, including Mermaid diagrams.
         </p>
 
         <!-- Markdown Viewer App Section -->
@@ -84,6 +89,9 @@
               
               // Inject the converted HTML into the 'markdownContent' div
               document.getElementById('markdownContent').innerHTML = htmlContent;
+
+              // Initialize Mermaid to render any diagrams in the content
+              mermaid.init();
             } catch (error) {
               // In case of an error (e.g., file not found)
               document.getElementById('markdownContent').innerHTML = 'Error: ' + error.message;
@@ -106,7 +114,7 @@
   <!-- Footer -->
   <footer class="bg-blue-600 text-white py-4 mt-12">
     <div class="container mx-auto text-center">
-      <p>&copy; 2024  Name. All rights reserved.</p>
+      <p>&copy; 2024  Name: Parth royal All rights reserved.</p>
     </div>
   </footer>
 
