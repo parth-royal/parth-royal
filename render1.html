@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview from File</title>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+    <style>
+        #output {
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Markdown Preview</h1>
+    <div id="output">Loading Markdown...</div>
+
+    <script>
+        // Initialize the Showdown converter
+        var converter = new showdown.Converter();
+
+        // Fetch the Markdown file from the server (1.md)
+        fetch('1.md')
+            .then(response => response.text())  // Get the content of the file as text
+            .then(markdownText => {
+                // Convert the Markdown content to HTML
+                var htmlContent = converter.makeHtml(markdownText);
+                
+                // Display the converted HTML in the output div
+                document.getElementById('output').innerHTML = htmlContent;
+            })
+            .catch(error => {
+                // Handle error if file can't be loaded
+                document.getElementById('output').innerHTML = 'Error loading the Markdown file.';
+                console.error(error);
+            });
+    </script>
+
+</body>
+</html>
