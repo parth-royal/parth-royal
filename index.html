@@ -1,68 +1,126 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Markdown Viewer</title>
+  <title>Your Portfolio</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Basic styling for the app */
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f4f4f9;
-    }
-    h1 {
-      color: #333;
-    }
-    .markdown-container {
-      background-color: white;
-      border: 1px solid #ddd;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Custom Styling for Hiding the Project */
+    .hidden-project {
+      display: none;
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
 
-  <!-- Section for displaying the markdown content -->
-  <h1>Markdown Viewer</h1>
-  <div id="markdownContent" class="markdown-container">
-    Loading Markdown...
-  </div>
+  <!-- Navigation Bar -->
+  <header class="bg-blue-600 p-4 text-white">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-semibold">Your Portfolio</h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#about" class="hover:text-blue-300">About</a></li>
+          <li><a href="#portfolio" class="hover:text-blue-300" onclick="showProject()">Portfolio Projects</a></li>
+          <li><a href="#contact" class="hover:text-blue-300">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <!-- External script to load the markdown file and render it -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Main Content -->
+  <main class="container mx-auto p-6">
+
+    <!-- About Section -->
+    <section id="about" class="my-12">
+      <h2 class="text-4xl font-bold mb-6">About Me</h2>
+      <p class="text-lg">
+        Hello! I'm a passionate developer with experience in web development, particularly in frontend technologies.
+        Below are some of the projects I've worked on, showcasing my skills and expertise.
+      </p>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="my-12">
+      <h2 class="text-4xl font-bold mb-6">Portfolio Projects</h2>
+      <!-- Button to Show/Hide the Project -->
+      <button onclick="showProject()" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
+        Show Markdown Viewer Project
+      </button>
+      
+      <!-- Project - Hidden by Default -->
+      <div id="markdownViewerProject" class="hidden-project mt-6 p-6 bg-white shadow-md rounded-lg">
+        <h3 class="text-2xl font-semibold">Markdown Viewer</h3>
+        <p class="text-lg my-4">
+          This project allows users to view the content of a markdown file within the app. Users can upload a markdown file, and the app will render it in a readable HTML format.
+        </p>
+
+        <!-- Markdown Viewer App Section -->
+        <h1 class="text-3xl font-semibold mb-4">Markdown Viewer</h1>
+        <div id="markdownContent" class="p-4 bg-gray-50 border border-gray-300 rounded-lg">
+          Loading Markdown...
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+          // Function to fetch the '1.md' file and render it as HTML
+          async function renderMarkdown() {
+            try {
+              // Fetch the markdown file (assumes '1.md' is in the same folder as this HTML file)
+              const response = await fetch('1.md');
+              
+              // Check if the response is okay (status 200)
+              if (!response.ok) {
+                throw new Error('Markdown file not found!');
+              }
+
+              // Get the text content of the markdown file
+              const markdownText = await response.text();
+              
+              // Convert the markdown text to HTML using marked.js
+              const htmlContent = marked(markdownText);
+              
+              // Inject the converted HTML into the 'markdownContent' div
+              document.getElementById('markdownContent').innerHTML = htmlContent;
+            } catch (error) {
+              // In case of an error (e.g., file not found)
+              document.getElementById('markdownContent').innerHTML = 'Error: ' + error.message;
+            }
+          }
+
+          // Call the function to render the markdown when the page loads
+          window.onload = renderMarkdown;
+        </script>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="my-12">
+      <h2 class="text-4xl font-bold mb-6">Contact</h2>
+      <p class="text-lg">Feel free to reach out to me via email or follow me on social media!</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 text-white py-4 mt-12">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2024 Your Name. All rights reserved.</p>
+    </div>
+  </footer>
+
   <script>
-    // Function to fetch the '1.md' file and render it as HTML
-    async function renderMarkdown() {
-      try {
-        // Fetch the markdown file (assumes '1.md' is in the same folder as this HTML file)
-        const response = await fetch('1.md');
-        
-        // Check if the response is okay (status 200)
-        if (!response.ok) {
-          throw new Error('Markdown file not found!');
-        }
-
-        // Get the text content of the markdown file
-        const markdownText = await response.text();
-        
-        // Convert the markdown text to HTML using marked.js
-        const htmlContent = marked(markdownText);
-        
-        // Inject the converted HTML into the 'markdownContent' div
-        document.getElementById('markdownContent').innerHTML = htmlContent;
-      } catch (error) {
-        // In case of an error (e.g., file not found)
-        document.getElementById('markdownContent').innerHTML = 'Error: ' + error.message;
+    // Function to toggle the visibility of the Markdown Viewer project
+    function showProject() {
+      const projectDiv = document.getElementById("markdownViewerProject");
+      // Toggle the visibility of the project
+      if (projectDiv.classList.contains("hidden-project")) {
+        projectDiv.classList.remove("hidden-project");
+      } else {
+        projectDiv.classList.add("hidden-project");
       }
     }
-
-    // Call the function to render the markdown when the page loads
-    window.onload = renderMarkdown;
   </script>
-
+  
 </body>
 </html>
